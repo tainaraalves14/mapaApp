@@ -1,0 +1,7 @@
+{
+  "name": "mapaApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
