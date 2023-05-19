@@ -1,6 +1,7 @@
 import { environment } from './../../environments/environment.prod';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
+import { Geolocation, Position} from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-home',
@@ -30,5 +31,38 @@ export class HomePage {
       },
     });
   }
+
+  async buscarPosicao() {
+    const coordinates = await Geolocation.getCurrentPosition();
+
+    console.log('Current position:', coordinates);
+    this.AdicionarMarcador(coordinates)
+    return coordinates;
+  }
+
+  AdicionarMarcador(coordinates: Position){
+    // Add a marker to the map
+    const markerId = this.Map.addMarker({
+      coordinate: {
+        lat: coordinates.coords.latitude,
+        lng: coordinates.coords.longitude
+      },
+
+    })
+
+  }
+  zoomNoMarcador(){
+    this.Map.setCamera({
+      coordinate: {
+        lat: coordinates.coords.latitude,
+        lng: coordinates.coords.longitude
+      },
+      zoom: 15,
+      animate: true
+    });
+  }
+
+
+
 
 }
