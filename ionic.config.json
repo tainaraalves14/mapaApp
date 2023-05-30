@@ -1,5 +1,5 @@
 {
-  "name": "mapaApp",
+  "name": "ionic-app-base",
   "integrations": {
     "capacitor": {}
   },

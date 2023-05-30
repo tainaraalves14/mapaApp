@@ -1,7 +1,7 @@
-import { environment } from './../../environments/environment.prod';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
-import { Geolocation, Position} from '@capacitor/geolocation';
+import { environment } from 'src/environments/environment';
+import { Geolocation, Position } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-home',
@@ -9,60 +9,54 @@ import { Geolocation, Position} from '@capacitor/geolocation';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  @ViewChild('map') mapRef!: ElementRef<HTMLElement>;
-  Map!: GoogleMap;
+  @ViewChild('local') mapRef!: ElementRef<HTMLElement>; 
+  local!: GoogleMap;
 
   constructor() {}
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.createMap();
   }
 
   async createMap() {
-    this.Map = await GoogleMap.create({
+    this.local = await GoogleMap.create({
       id: 'my-map',
       element: this.mapRef.nativeElement,
-      apiKey: environment.mapskey,
+      apiKey: environment.localKey,
       config: {
         center: {
-          lat: 33.6,
-          lng: -117.9,
+          lat: -22.523551, 
+          lng: -48.560933,
         },
-        zoom: 8,
+        zoom: 1,
       },
     });
+    this.buscarPosicao();
   }
 
   async buscarPosicao() {
     const coordinates = await Geolocation.getCurrentPosition();
-
-    console.log('Current position:', coordinates);
-    this.AdicionarMarcador(coordinates)
-    return coordinates;
-  }
-
-  AdicionarMarcador(coordinates: Position){
-    // Add a marker to the map
-    const markerId = this.Map.addMarker({
-      coordinate: {
-        lat: coordinates.coords.latitude,
-        lng: coordinates.coords.longitude
-      },
-
-    })
+    this.focarMapa(coordinates)
+  console.log('Current position:', coordinates);
 
   }
-  zoomNoMarcador(){
-    this.Map.setCamera({
+  focarMapa(coordinates: Position) {
+    this.local.setCamera({
       coordinate: {
         lat: coordinates.coords.latitude,
-        lng: coordinates.coords.longitude
+        lng: coordinates.coords.longitude,
       },
       zoom: 15,
-      animate: true
+      animate: true,
     });
+    this.adicionarMarcador(coordinates);
   }
 
-
-
-
+  async adicionarMarcador(coordinates: Position) {
+    const marked = await this.local.addMarker({
+      coordinate: {
+        lat: coordinates.coords.latitude,
+        lng: coordinates.coords.longitude,
+      },
+    });
+  }
 }

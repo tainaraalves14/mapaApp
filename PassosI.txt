@@ -1,0 +1,95 @@
+
+Google Ionic Passos Básicos
+Certificar se o Node.js está instalado
+Instalar o Ionic CLI
+npm install -g @ionic/cli
+
+Criar um novo projeto Ionic
+ionic start nome-do-app blank
+Acessar o diretório
+
+npm install @ionic/pwa-elements
+
+
+
+Google Maps(Google Cloud Platform e habilitar a API do Google Maps.)
+Habilitar a API do Google Maps.
+Ronan: AIzaSyD6v5fULYIQf3DgoRdHRxCahyUMBJSYyjc
+
+
+
+import no main.ts
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
+
+https://ionicframework.com/docs/native/google-maps
+npm install @capacitor/google-maps
+npx cap sync / ionic cap sync
+
+home.module.ts
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+
+home.page.scss
+width:100% e height:100%
+
+capacitor-google-map {
+  display: inline-block;
+  width: 275px;
+  height: 400px;
+}
+
+Colocar no home.page.ts
+import { GoogleMap } from '@capacitor/google-maps';
+
+const apiKey = 'YOUR_API_KEY_HERE';
+
+const mapRef = document.getElementById('map');
+
+const newMap = await GoogleMap.create({
+  id: 'my-map', // Unique identifier for this map instance
+  element: mapRef, // reference to the capacitor-google-map element
+  apiKey: apiKey, // Nome do seu App
+  config: {
+    center: {
+      // The initial position to be rendered by the map
+      lat: 33.6, // latitude da etec
+      lng: -117.9, //longitude da etec
+    },
+    zoom: 8, // The initial zoom level to be rendered by the map
+  },
+});
+
+home.page.html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+     Google Maps
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <capacitor-google-map #map></capacitor-google-map>
+</ion-content>
+
+
+environment.prod.ts e environment.ts
+ mapsKey: 'AIzaSyD6v5fULYIQf3DgoRdHRxCahyUMBJSYyjc'
+
+
+https://ionicframework.com/docs/native/geolocation
+npm install @capacitor/geolocation
+npx cap sync
+
+import no home.page.ts
+import { Geolocation } from '@capacitor/geolocation';
+
+const printCurrentPosition = async () => {
+  const coordinates = await Geolocation.getCurrentPosition();
+
+  console.log('Current position:', coordinates);
+};
